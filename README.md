@@ -10,13 +10,13 @@ onready(console.log.bind(console, 'one'));
 onready(console.log.bind(console, 'two'));
 
 // Deliver the promise
-onready.deliver('[delivered', 'args]').
-// > one [delivered args]
-// > two [delivered args]
+onready.deliver('delivered-arg-1', 'delivered-arg-2').
+// > one delivered-arg-1 delivered-arg-2
+// > two delivered-arg-1 delivered-arg-2
 
-// Once the promise has been delivered, the callback is called immediately.
+// Once the promise has been delivered, the callback on next event loop.
 onready(console.log.bind(console, 'three'))
-// > three [delivered args]
+// > three delivered-arg-1 delivered-arg-2
 ```
 
 ## License

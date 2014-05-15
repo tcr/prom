@@ -4,12 +4,12 @@
 // Deliver the promise: promise.deliver([args...]).
 // Once the promise has been delivered, p(yourCallback) immediately calls the callback.
  
-module.exports = function () {
+module.exports = function (thisarg) {
   var queue = [], args = null;
   var promise = function (fn) {
     if (promise.delivered) {
       process.nextTick(function () {
-        fn.apply(null, args);
+        fn.apply(thisarg, args);
       });
     } else {
       queue.push(fn);
@@ -18,8 +18,8 @@ module.exports = function () {
   promise.deliver = function () {
     args = arguments, promise.delivered = true;
     queue.splice(0, queue.length).forEach(function (fn) {
-      process.nextTick(function () {
-        fn.apply(null, args);
+      (process.nextTick || setImmediate)(function () {
+        fn.apply(thisarg, args);
       });
     });
   }
